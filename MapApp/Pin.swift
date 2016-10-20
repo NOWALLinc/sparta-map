@@ -41,7 +41,7 @@ class Pin: NSObject, MKAnnotation {
     func toDictionary() -> [String: Any] {
         var dict: [String: Any] = [:]
         
-        let geo: [String: CLLocationDegrees] = [
+        let geo: [String: Any] = [
             "latitude": coordinate.latitude,
             "longitude": coordinate.longitude
         ]

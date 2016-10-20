@@ -29,6 +29,12 @@ class ViewController: UIViewController, MKMapViewDelegate {
     
     // マップ上をロングタップした際にピンを登録
     func longTapMapView(_ gesture: UILongPressGestureRecognizer) {
+        // ロングタップイベントは「ロングタップと認識した時」と「ロングタップが終了したとき」の2回呼ばれます。
+        // 1回だけ呼ばれればよいので、認識時の呼び出しで以外は何もしないようにしています。
+        if (gesture.state != UIGestureRecognizerState.began) {
+            // ロングタップ認識時以外では何もしない
+            return
+        }
         
         // 位置情報を取得します。
         let point = gesture.location(in: view)
