@@ -23,40 +23,6 @@ class ViewController: UIViewController {
         loadPins()
     }
     
-    // マップ上をロングタップした際にピンを登録
-    @IBAction func longTapMapView(_ sender: UILongPressGestureRecognizer) {
-        // ロングタップイベントは「ロングタップと認識した時」と「ロングタップが終了したとき」の2回呼ばれます。
-        // 1回だけ呼ばれればよいので、認識時の呼び出しで以外は何もしないようにしています。
-        if sender.state != UIGestureRecognizerState.began {
-            // ロングタップ認識時以外では何もしない
-            return
-        }
-        
-        // 位置情報を取得します。
-        let point = sender.location(in: view)
-        let geo = mapView.convert(point, toCoordinateFrom: mapView)
-        
-        // アラートの作成
-        let alert = UIAlertController(title: "スポット登録", message: "この場所に残すメッセージを入力してください。", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "登録", style: .default, handler: { (action) -> Void in
-            // 登録ボタンのアクション
-            
-            let pin = Pin(geo: geo, text: alert.textFields?.first?.text)
-            self.mapView.addAnnotation(pin)
-            
-            self.savePin(pin)
-        }))
-
-        // ピンに登録するテキスト用の入力フィールドをアラートに追加します。
-        alert.addTextField(configurationHandler: { (textField) in
-            textField.placeholder = "メッセージ"
-        })
-        
-        // アラートの表示
-        present(alert, animated: true, completion: nil)
-    }
-    
     // 既に保存されているピンを取得
     func loadPins() {
         let userDefaults = UserDefaults.standard
@@ -90,6 +56,40 @@ class ViewController: UIViewController {
             let newSavedPins: [[String: Any]] = [pinInfo]
             userDefaults.set(newSavedPins, forKey: userDefName)
         }
+    }
+    
+    // マップ上をロングタップした際にピンを登録
+    @IBAction func longTapMapView(_ sender: UILongPressGestureRecognizer) {
+        // ロングタップイベントは「ロングタップと認識した時」と「ロングタップが終了したとき」の2回呼ばれます。
+        // 1回だけ呼ばれればよいので、認識時の呼び出しで以外は何もしないようにしています。
+        if sender.state != UIGestureRecognizerState.began {
+            // ロングタップ認識時以外では何もしない
+            return
+        }
+        
+        // 位置情報を取得します。
+        let point = sender.location(in: view)
+        let geo = mapView.convert(point, toCoordinateFrom: mapView)
+        
+        // アラートの作成
+        let alert = UIAlertController(title: "スポット登録", message: "この場所に残すメッセージを入力してください。", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "登録", style: .default, handler: { (action) -> Void in
+            // 登録ボタンのアクション
+            
+            let pin = Pin(geo: geo, text: alert.textFields?.first?.text)
+            self.mapView.addAnnotation(pin)
+            
+            self.savePin(pin)
+        }))
+
+        // ピンに登録するテキスト用の入力フィールドをアラートに追加します。
+        alert.addTextField(configurationHandler: { (textField) in
+            textField.placeholder = "メッセージ"
+        })
+        
+        // アラートの表示
+        present(alert, animated: true, completion: nil)
     }
 }
 
