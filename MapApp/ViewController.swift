@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, MKMapViewDelegate {
+class ViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     
@@ -19,25 +19,21 @@ class ViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // マップでロングタップイベントが反応するようにジェスチャーを登録します
-        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longTapMapView(_:)));
-        mapView.addGestureRecognizer(gesture)
-        
         // 保存されているピンを配置
         loadPins()
     }
     
     // マップ上をロングタップした際にピンを登録
-    func longTapMapView(_ gesture: UILongPressGestureRecognizer) {
+    @IBAction func longTapMapView(_ sender: UILongPressGestureRecognizer) {
         // ロングタップイベントは「ロングタップと認識した時」と「ロングタップが終了したとき」の2回呼ばれます。
         // 1回だけ呼ばれればよいので、認識時の呼び出しで以外は何もしないようにしています。
-        if (gesture.state != UIGestureRecognizerState.began) {
+        if sender.state != UIGestureRecognizerState.began {
             // ロングタップ認識時以外では何もしない
             return
         }
         
         // 位置情報を取得します。
-        let point = gesture.location(in: view)
+        let point = sender.location(in: view)
         let geo = mapView.convert(point, toCoordinateFrom: mapView)
         
         // アラートの作成
