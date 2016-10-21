@@ -68,7 +68,7 @@ class ViewController: UIViewController {
         }
         
         // 位置情報を取得します。
-        let point = sender.location(in: view)
+        let point = sender.location(in: mapView)
         let geo = mapView.convert(point, toCoordinateFrom: mapView)
         
         // アラートの作成
