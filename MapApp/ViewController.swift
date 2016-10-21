@@ -23,22 +23,6 @@ class ViewController: UIViewController {
         loadPins()
     }
     
-    // 既に保存されているピンを取得
-    func loadPins() {
-        let userDefaults = UserDefaults.standard
-        
-        if let savedPins = userDefaults.object(forKey: userDefName) as? [[String: Any]] {
-                
-            // 現在のピンを削除
-            self.mapView.removeAnnotations(self.mapView.annotations)
-            
-            for pinInfo in savedPins {
-                let newPin = Pin(dictionary: pinInfo)
-                self.mapView.addAnnotation(newPin)
-            }
-        }
-    }
-    
     // ピンの保存
     func savePin(_ pin: Pin) {
         let userDefaults = UserDefaults.standard
@@ -55,6 +39,22 @@ class ViewController: UIViewController {
             // まだピン保存データがない場合、新しい配列として保存します。
             let newSavedPins: [[String: Any]] = [pinInfo]
             userDefaults.set(newSavedPins, forKey: userDefName)
+        }
+    }
+    
+    // 既に保存されているピンを取得
+    func loadPins() {
+        let userDefaults = UserDefaults.standard
+        
+        if let savedPins = userDefaults.object(forKey: userDefName) as? [[String: Any]] {
+                
+            // 現在のピンを削除
+            self.mapView.removeAnnotations(self.mapView.annotations)
+            
+            for pinInfo in savedPins {
+                let newPin = Pin(dictionary: pinInfo)
+                self.mapView.addAnnotation(newPin)
+            }
         }
     }
     
