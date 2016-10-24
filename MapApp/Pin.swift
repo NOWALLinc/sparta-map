@@ -26,10 +26,8 @@ class Pin: NSObject, MKAnnotation {
     
     // UserDefaultsから取り出した各値を変換したオブジェクトを返します
     init(dictionary: [String: Any]) {
-        if let geo = dictionary["geo"] as? [String: CLLocationDegrees] {
-            if let latitude = geo["latitude"], let longitude = geo["longitude"] {
-                coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            }
+        if let latitude = dictionary["latitude"] as? Double, let longitude = dictionary["longitude"] as? Double {
+            coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         }
         
         if let tit = dictionary["title"] as? String {
@@ -41,12 +39,8 @@ class Pin: NSObject, MKAnnotation {
     func toDictionary() -> [String: Any] {
         var dict: [String: Any] = [:]
         
-        let geo: [String: Any] = [
-            "latitude": coordinate.latitude,
-            "longitude": coordinate.longitude
-        ]
-        
-        dict["geo"] = geo
+        dict["latitude"] = coordinate.latitude
+        dict["longitude"] = coordinate.longitude
         
         if let tit = title {
             dict["title"] = tit

@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         let userDefaults = UserDefaults.standard
         
         // 保存するピンをUserDefaults用に変換します。
-        let pinInfo = (pin.toDictionary())
+        let pinInfo = pin.toDictionary()
         
         if var savedPins = userDefaults.object(forKey: userDefName) as? [[String: Any]] {
             // すでにピン保存データがある場合、それに追加する形で保存します。
